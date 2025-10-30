@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso Práctico ITIL + PMBOK | Smart City 2045</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .scenario {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .tab:hover:before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .content {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: #f5576c;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .badge.itil {
+            background: #4CAF50;
+        }
+
+        .badge.pmbok {
+            background: #FF9800;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #667eea;
+        }
+
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 30px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: #667eea;
+        }
+
+        .timeline-item:last-child:after {
+            display: none;
+        }
+
+        .metric {
+            display: inline-block;
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+            background: white;
+            border-radius: 10px;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .integration-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+
+        .integration-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                min-width: 100%;
+            }
+        }
+
+        /* Estilos para la Matriz de Integración */
+        .matrix-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .integration-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.9em;
+        }
+
+        .integration-matrix th,
+        .integration-matrix td {
+            padding: 15px 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-corner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            min-width: 180px;
+        }
+
+        .pmbok-header {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 0.95em;
+            min-width: 120px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .itil-practice {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: white;
+            font-weight: bold;
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            min-width: 180px;
+        }
+
+        .cell {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            position: relative;
+        }
+
+        .cell:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            z-index: 10;
+        }
+
+        .cell.high {
+            background: linear-gradient(135deg, #ffab91 0%, #ff8a65 100%);
+            color: #bf360c;
+        }
+
+        .cell.medium {
+            background: linear-gradient(135deg, #fff59d 0%, #fff176 100%);
+            color: #f57f17;
+        }
+
+        .cell.low {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+            color: #1b5e20;
+        }
+
+        .cell::after {
+            content: attr(data-integration);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            font-size: 0.85em;
+            font-weight: normal;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .cell:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        @keyframes pulse-matrix {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            50% { 
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+        }
+
+        .cell.high:hover {
+            animation: pulse-matrix 1.5s infinite;
+        }
+
+        @media (max-width: 1200px) {
+            .matrix-container {
+                font-size: 0.85em;
+            }
+            
+            .integration-matrix th,
+            .integration-matrix td {
+                padding: 10px 8px;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="floating">
+            <h1>🌆 NeoCity 2045: Gestión Inteligente de Servicios TI</h1>
+            <p class="subtitle">Caso Práctico Integrado: ITIL 4 + PMBOK 7</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <span class="badge itil">ITIL 4</span>
+                <span class="badge pmbok">PMBOK 7</span>
+                <span class="badge">Smart City</span>
+                <span class="badge">Transformación Digital</span>
+            </div>
+        </header>
+
+        <div class="scenario">
+            <h2 style="color: #667eea; margin-bottom: 20px;">📋 Contexto del Proyecto</h2>
+            <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">
+                <strong>NeoCity</strong>, una metrópoli de 5 millones de habitantes, inicia su transformación hacia una ciudad inteligente completa. 
+                El gobierno municipal ha aprobado el proyecto <strong>"NeoConnect 2045"</strong> con un presupuesto de $50 millones para implementar 
+                un ecosistema de servicios TI que integre: transporte inteligente, gestión energética, seguridad ciudadana, servicios de salud digital 
+                y administración electrónica.
+            </p>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                Tu rol es <strong>Director de Transformación Digital</strong>, responsable de aplicar las mejores prácticas de ITIL 4 para la gestión 
+                de servicios y PMBOK 7 para la dirección del proyecto.
+            </p>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <div class="metric">
+                    <span class="metric-value">$50M</span>
+                    <span class="metric-label">Presupuesto</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">24</span>
+                    <span class="metric-label">Meses</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">5M</span>
+                    <span class="metric-label">Usuarios</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">15</span>
+                    <span class="metric-label">Servicios</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('pmbok')">📊 PMBOK: Gestión del Proyecto</button>
+            <button class="tab" onclick="showTab('itil')">⚙️ ITIL: Gestión de Servicios</button>
+            <button class="tab" onclick="showTab('integration')">🔗 Integración PMBOK + ITIL</button>
+            <button class="tab" onclick="showTab('kpis')">📈 KPIs y Resultados</button>
+        </div>
+
+        <div id="pmbok" class="content active">
+            <div class="scenario">
+                <h2 style="color: #FF9800; margin-bottom: 25px;">📊 Aplicación de PMBOK 7</h2>
+                
+                <div class="card">
+                    <h3>1️⃣ Dominios de Desempeño del Proyecto</h3>
+                    <p><strong>Dominio de Stakeholders:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>Gobierno Municipal (sponsor ejecutivo)</li>
+                        <li>5 millones de ciudadanos (usuarios finales)</li>
+                        <li>15 secretarías gubernamentales</li>
+                        <li>Proveedores tecnológicos (IBM, Microsoft, SAP)</li>
+                        <li>Sindicatos de transporte público</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Estrategia de Engagement:</strong> Reuniones quincenales, plataforma digital de participación ciudadana, dashboard en tiempo real.</p>
+                </div>
+
+                <div class="card">
+                    <h3>2️⃣ Dominio de Planificación</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h4 style="color: #667eea;">Fase 1: Iniciación (Meses 1-3)</h4>
+                            <p>Análisis de viabilidad, definición de arquitectura tecnológica, selección de proveedores</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%;">100%</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 style="color: #667eea;">Fase 2: Infraestructura Core (Meses 4-9)</h4>
+                            <p>Implementación de data center, red IoT, plataforma cloud, ciberseguridad</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;">75%</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 style="color: #667eea;">Fase 3: Servicios Críticos (Meses 10-15)</h4>
+                            <p>Transporte inteligente, gestión energética, seguridad ciudadana</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%;">45%</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 style="color: #667eea;">Fase 4: Servicios Complementarios (Meses 16-21)</h4>
+                            <p>Salud digital, educación online, administración electrónica</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 20%;">20%</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 style="color: #667eea;">Fase 5: Estabilización y Mejora (Meses 22-24)</h4>
+                            <p>Optimización, capacitación masiva, transición a operación</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 5%;">5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>3️⃣ Dominio de Trabajo del Proyecto</h3>
+                    <p><strong>Enfoque Híbrido:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li><strong>Cascada</strong> para infraestructura física (data center, sensores IoT)</li>
+                        <li><strong>Ágil (Scrum)</strong> para desarrollo de aplicaciones móviles</li>
+                        <li><strong>DevOps</strong> para integración y despliegue continuo</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Equipo del Proyecto:</strong> 120 personas (50 internos, 70 consultores externos)</p>
+                </div>
+
+                <div class="card">
+                    <h3>4️⃣ Gestión de Riesgos</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 10px; text-align: left;">Riesgo</th>
+                            <th style="padding: 10px; text-align: left;">Probabilidad</th>
+                            <th style="padding: 10px; text-align: left;">Impacto</th>
+                            <th style="padding: 10px; text-align: left;">Respuesta</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Ciberataque a infraestructura crítica</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Media</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Muy Alto</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Implementar SOC 24/7</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Resistencia sindical al cambio</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Alta</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Alto</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">Programa de reconversión laboral</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Brecha digital ciudadana</td>
+                            <td style="padding: 10px;">Alta</td>
+                            <td style="padding: 10px;">Medio</td>
+                            <td style="padding: 10px;">Centros de alfabetización digital</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="itil" class="content">
+            <div class="scenario">
+                <h2 style="color: #4CAF50; margin-bottom: 25px;">⚙️ Aplicación de ITIL 4</h2>
+
+                <div class="card">
+                    <h3>🎯 Sistema de Valor del Servicio (SVS)</h3>
+                    <p style="margin-bottom: 15px;"><strong>Cadena de Valor aplicada a NeoConnect:</strong></p>
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 2px dashed #4CAF50;">
+                        <p style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #4CAF50;">
+                            Plan → Design → Obtain → Build → Deliver → Support → Improve
+                        </p>
+                        <p><strong>Ejemplo: Servicio de Transporte Inteligente</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                            <li><strong>Plan:</strong> Análisis de rutas, demanda y tiempos de viaje</li>
+                            <li><strong>Design:</strong> Arquitectura de sensores GPS, app móvil, algoritmos de optimización</li>
+                            <li><strong>Obtain:</strong> Adquisición de 5,000 sensores IoT, contratación de AWS</li>
+                            <li><strong>Build:</strong> Desarrollo de la app "NeoBus", integración con sistemas de pago</li>
+                            <li><strong>Deliver:</strong> Lanzamiento progresivo en 3 distritos piloto</li>
+                            <li><strong>Support:</strong> Mesa de ayuda 24/7, monitoreo de SLA</li>
+                            <li><strong>Improve:</strong> Análisis de datos para ajustar rutas en tiempo real</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📚 Prácticas ITIL Implementadas</h3>
+                    <div class="integration-grid">
+                        <div class="integration-card">
+                            <div class="icon">🎫</div>
+                            <h4>Gestión de Incidentes</h4>
+                            <p>Centro de comando con IA que detecta y prioriza incidentes automáticamente. Tiempo de respuesta objetivo: 15 minutos para P1.</p>
+                        </div>
+                        <div class="integration-card">
+                            <div class="icon">🔄</div>
+                            <h4>Gestión de Cambios</h4>
+                            <p>CAB (Change Advisory Board) automatizado que evalúa riesgos usando ML. Ventana de cambios: domingos 2-6 AM.</p>
+                        </div>
+                        <div class="integration-card">
+                            <div class="icon">📊</div>
+                            <h4>Gestión del Nivel de Servicio</h4>
+                            <p>SLA: 99.9% disponibilidad para servicios críticos. Dashboard público en tiempo real para transparencia ciudadana.</p>
+                        </div>
+                        <div class="integration-card">
+                            <div class="icon">🗄️</div>
+                            <h4>Gestión de Configuración</h4>
+                            <p>CMDB centralizado con 50,000+ CIs: servidores, sensores, aplicaciones, contratos. Actualización automática vía descubrimiento.</p>
+                        </div>
+                        <div class="integration-card">
+                            <div class="icon">📈</div>
+                            <h4>Mejora Continua</h4>
+                            <p>Registro CSI con 200+ iniciativas. Ciclo PDCA mensual. Inversión del 10% del presupuesto en innovación.</p>
+                        </div>
+                        <div class="integration-card">
+                            <div class="icon">🔐</div>
+                            <h4>Gestión de Seguridad</h4>
+                            <p>SOC con análisis de amenazas 24/7. Certificaciones ISO 27001 y SOC 2. Auditorías trimestrales de penetración.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Catálogo de Servicios NeoCity</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="background: #E8F5E9; padding: 15px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                            <strong>🚌 NeoTransit</strong><br>
+                            <small>Transporte inteligente en tiempo real</small>
+                        </div>
+                        <div style="background: #FFF3E0; padding: 15px; border-radius: 8px; border-left: 4px solid #FF9800;">
+                            <strong>⚡ NeoEnergy</strong><br>
+                            <small>Gestión energética predictiva</small>
+                        </div>
+                        <div style="background: #E3F2FD; padding: 15px; border-radius: 8px; border-left: 4px solid #2196F3;">
+                            <strong>🚨 NeoSafe</strong><br>
+                            <small>Seguridad ciudadana con IA</small>
+                        </div>
+                        <div style="background: #F3E5F5; padding: 15px; border-radius: 8px; border-left: 4px solid #9C27B0;">
+                            <strong>🏥 NeoHealth</strong><br>
+                            <small>Telemedicina y expedientes digitales</small>
+                        </div>
+                        <div style="background: #FCE4EC; padding: 15px; border-radius: 8px; border-left: 4px solid #E91E63;">
+                            <strong>📱 NeoGov</strong><br>
+                            <small>Trámites gubernamentales online</small>
+                        </div>
+                        <div style="background: #E0F2F1; padding: 15px; border-radius: 8px; border-left: 4px solid #009688;">
+                            <strong>🌳 NeoGreen</strong><br>
+                            <small>Monitoreo ambiental IoT</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="integration" class="content">
+            <div class="scenario">
+                <h2 style="color: #764ba2; margin-bottom: 25px;">🔗 Integración PMBOK + ITIL</h2>
+
+                <div class="card">
+                    <h3>🔄 Sinergia entre Proyecto y Servicio</h3>
+                    <p style="margin-bottom: 20px;">NeoConnect demuestra cómo PMBOK y ITIL trabajan en conjunto para crear valor sostenible:</p>
+                    
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                            <th style="padding: 15px; text-align: left;">Fase</th>
+                            <th style="padding: 15px; text-align: left;">PMBOK (Gestión del Proyecto)</th>
+                            <th style="padding: 15px; text-align: left;">ITIL (Gestión del Servicio)</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold;">Iniciación</td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Acta de constitución del proyecto<br>
+                                • Identificación de stakeholders<br>
+                                • Business case
+                            </td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Definición de estrategia del servicio<br>
+                                • Portafolio de servicios inicial<br>
+                                • Análisis de demanda
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold;">Planificación</td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • WBS del proyecto<br>
+                                • Cronograma y presupuesto<br>
+                                • Plan de gestión de riesgos
+                            </td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Diseño de servicios<br>
+                                • SLAs y OLAs<br>
+                                • Arquitectura tecnológica
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold;">Ejecución</td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Construcción de infraestructura<br>
+                                • Desarrollo de aplicaciones<br>
+                                • Gestión del equipo del proyecto
+                            </td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Transición del servicio<br>
+                                • Gestión de cambios<br>
+                                • Validación y pruebas del servicio
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold;">Monitoreo</td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Control de cronograma<br>
+                                • Control de costos<br>
+                                • Gestión de valor ganado (EVM)
+                            </td>
+                            <td style="padding: 15px; border-bottom: 1px solid #ddd;">
+                                • Monitoreo de SLAs<br>
+                                • Gestión de eventos<br>
+                                • Dashboard de rendimiento
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; font-weight: bold;">Cierre</td>
+                            <td style="padding: 15px;">
+                                • Lecciones aprendidas<br>
+                                • Cierre administrativo<br>
+                                • Transferencia a operaciones
+                            </td>
+                            <td style="padding: 15px;">
+                                • Operación del servicio continua<br>
+                                • Mejora continua (CSI)<br>
+                                • Soporte y mantenimiento 24/7
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>💡 Caso Real: Integración en Acción</h3>
+                    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 10px; margin-top: 15px;">
+                        <h4 style="color: #d84315; margin-bottom: 15px;">🚨 Escenario: Crisis de Servicio NeoTransit</h4>
+                        <p style="margin-bottom: 15px;"><strong>Situación:</strong> En el mes 12 del proyecto, durante la fase de lanzamiento del servicio NeoTransit, se detecta que los sensores GPS tienen un 30% de tasa de fallos, causando información incorrecta en la app ciudadana.</p>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #667eea;">🔷 Respuesta PMBOK (Vista de Proyecto):</h4>
+                            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                                <li><strong>Gestión de Problemas:</strong> El Project Manager identifica esto como un issue crítico del proyecto</li>
+                                <li><strong>Control de Cambios:</strong> Se solicita cambio al cronograma (+2 semanas) y presupuesto (+$500K) para reemplazo</li>
+                                <li><strong>Gestión de Adquisiciones:</strong> Negociación acelerada con nuevo proveedor de sensores</li>
+                                <li><strong>Comunicación a Stakeholders:</strong> Reunión de emergencia con alcalde y secretarios</li>
+                                <li><strong>Plan de Recuperación:</strong> Fast-track del despliegue de sensores nuevos</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #4CAF50;">🔷 Respuesta ITIL (Vista de Servicio):</h4>
+                            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                                <li><strong>Gestión de Incidentes:</strong> Se abren 15,000 tickets de usuarios reportando errores (Prioridad P1)</li>
+                                <li><strong>Gestión de Problemas:</strong> RCA (Root Cause Analysis) identifica firmware defectuoso</li>
+                                <li><strong>Gestión de Configuración:</strong> Actualización del CMDB con sensores problemáticos</li>
+                                <li><strong>Comunicación del Servicio:</strong> Notificación masiva vía app: "Servicio en modo degradado"</li>
+                                <li><strong>Workaround Temporal:</strong> Activación de sistema de estimación algorítmica basado en patrones históricos</li>
+                                <li><strong>Mejora Continua:</strong> Se crea plan de calidad para validación de hardware en futuros servicios</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: #c8e6c9; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                            <h4 style="color: #2e7d32;">✅ Resultado de la Integración:</h4>
+                            <p style="margin-top: 10px;">La colaboración entre el equipo de proyecto (PMBOK) y el equipo de operaciones (ITIL) permitió resolver la crisis en 18 días, manteniendo la confianza ciudadana y cumpliendo con el hito del proyecto con solo 2 semanas de retraso. El workaround de ITIL permitió mantener el servicio operativo mientras PMBOK gestionaba la solución permanente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Matriz de Integración ITIL-PMBOK</h3>
+                    <p style="margin-bottom: 20px;">Matriz interactiva que muestra cómo cada práctica de ITIL se relaciona con los dominios de PMBOK en NeoConnect:</p>
+                    
+                    <div class="matrix-container">
+                        <table class="integration-matrix">
+                            <thead>
+                                <tr>
+                                    <th class="matrix-corner">ITIL 4 ↓ / PMBOK 7 →</th>
+                                    <th class="pmbok-header">👥 Stakeholders</th>
+                                    <th class="pmbok-header">🎯 Equipo</th>
+                                    <th class="pmbok-header">📋 Planificación</th>
+                                    <th class="pmbok-header">⚙️ Trabajo</th>
+                                    <th class="pmbok-header">📊 Entrega</th>
+                                    <th class="pmbok-header">🔍 Medición</th>
+                                    <th class="pmbok-header">⚠️ Incertidumbre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="itil-practice">📈 Mejora Continua</td>
+                                    <td class="cell high" data-integration="Feedback ciudadano → Mejoras del proyecto">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Equipos Kaizen para optimización">🔥🔥</td>
+                                    <td class="cell high" data-integration="Registro CSI alimenta planificación">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Implementación de mejoras">🔥🔥</td>
+                                    <td class="cell high" data-integration="Entrega incremental de mejoras">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="KPIs compartidos ITIL-PMBOK">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Mejoras reducen incertidumbre">🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">🎫 Gestión de Incidentes</td>
+                                    <td class="cell medium" data-integration="Comunicación de fallos a stakeholders">🔥🔥</td>
+                                    <td class="cell high" data-integration="Equipo de respuesta 24/7">🔥🔥🔥</td>
+                                    <td class="cell low" data-integration="Planes de contingencia">🔥</td>
+                                    <td class="cell high" data-integration="Resolución durante construcción">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Impacta SLAs de entrega">🔥🔥</td>
+                                    <td class="cell high" data-integration="MTTR, disponibilidad">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Gestión de crisis no planificadas">🔥🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">🔄 Gestión de Cambios</td>
+                                    <td class="cell high" data-integration="Aprobación CAB con stakeholders">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Roles en CAB definidos">🔥🔥</td>
+                                    <td class="cell high" data-integration="RFC → Control de Cambios PMBOK">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Implementación controlada">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Cambios en cronograma entrega">🔥🔥</td>
+                                    <td class="cell medium" data-integration="Tasa de éxito de cambios">🔥🔥</td>
+                                    <td class="cell high" data-integration="Evaluación de riesgos de cambios">🔥🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">📊 Gestión del Nivel de Servicio</td>
+                                    <td class="cell high" data-integration="SLAs negociados con stakeholders">🔥🔥🔥</td>
+                                    <td class="cell low" data-integration="Responsables de cumplimiento">🔥</td>
+                                    <td class="cell high" data-integration="SLAs definen requisitos proyecto">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Construcción según SLAs">🔥🔥</td>
+                                    <td class="cell high" data-integration="Entrega cumple SLAs acordados">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Monitoreo continuo SLAs">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Penalizaciones por incumplimiento">🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">🗄️ Gestión de Configuración</td>
+                                    <td class="cell low" data-integration="CMDB transparente a stakeholders">🔥</td>
+                                    <td class="cell medium" data-integration="Equipo actualiza CMDB">🔥🔥</td>
+                                    <td class="cell high" data-integration="CMDB = Línea base configuración">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="CIs registrados durante build">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="CMDB para entrega activos">🔥🔥</td>
+                                    <td class="cell medium" data-integration="Auditorías CMDB">🔥🔥</td>
+                                    <td class="cell medium" data-integration="Trazabilidad ante problemas">🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">🔐 Gestión de Seguridad</td>
+                                    <td class="cell high" data-integration="Gobierno cumple normativas">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="SOC y equipo ciberseguridad">🔥🔥</td>
+                                    <td class="cell high" data-integration="Plan de seguridad integrado">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Security by design">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Entrega con certificaciones">🔥🔥</td>
+                                    <td class="cell high" data-integration="Auditorías y pentesting">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Respuesta a amenazas">🔥🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">💼 Gestión de Proveedores</td>
+                                    <td class="cell high" data-integration="Proveedores = Stakeholders clave">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Integración equipos proveedor">🔥🔥</td>
+                                    <td class="cell high" data-integration="Contratos en plan adquisiciones">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Proveedores ejecutan trabajo">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="SLAs proveedores → Cliente">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="KPIs desempeño proveedores">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Riesgos de dependencia">🔥🔥🔥</td>
+                                </tr>
+                                <tr>
+                                    <td class="itil-practice">📚 Gestión del Conocimiento</td>
+                                    <td class="cell medium" data-integration="Base conocimiento para stakeholders">🔥🔥</td>
+                                    <td class="cell high" data-integration="Capacitación continua equipo">🔥🔥🔥</td>
+                                    <td class="cell high" data-integration="Documentación proyecto → KB">🔥🔥🔥</td>
+                                    <td class="cell medium" data-integration="Captura lecciones aprendidas">🔥🔥</td>
+                                    <td class="cell medium" data-integration="Manuales de operación">🔥🔥</td>
+                                    <td class="cell low" data-integration="Uso de KB medido">🔥</td>
+                                    <td class="cell medium" data-integration="Reduce incertidumbre técnica">🔥🔥</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 10px;">
+                        <h4 style="color: #667eea; margin-bottom: 15px;">📖 Leyenda de Intensidad de Integración:</h4>
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 30px; height: 30px; background: #c8e6c9; border-radius: 5px;"></div>
+                                <span><strong>🔥 Baja:</strong> Relación indirecta o ocasional</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 30px; height: 30px; background: #fff59d; border-radius: 5px;"></div>
+                                <span><strong>🔥🔥 Media:</strong> Colaboración regular necesaria</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 30px; height: 30px; background: #ffab91; border-radius: 5px;"></div>
+                                <span><strong>🔥🔥🔥 Alta:</strong> Integración crítica e imprescindible</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="integration-detail" style="margin-top: 25px; padding: 25px; background: white; border-radius: 10px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">🔍 Detalle de Integración:</h4>
+                        <p id="detail-content" style="font-size: 1.1em; line-height: 1.8;"></p>
+                        <button onclick="closeDetail()" style="margin-top: 15px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Puntos Clave de Integración</h3>
+                    <div class="integration-grid">
+                        <div class="integration-card" style="border-top-color: #667eea;">
+                            <div class="icon">🔄</div>
+                            <h4>Transición Fluida</h4>
+                            <p>PMBOK entrega el proyecto completo. ITIL asegura operación continua. La fase de transición (mes 22-24) es crítica y requiere colaboración intensa.</p>
+                        </div>
+                        <div class="integration-card" style="border-top-color: #4CAF50;">
+                            <div class="icon">📊</div>
+                            <h4>Métricas Compartidas</h4>
+                            <p>KPIs del proyecto (EVM, SPI, CPI) evolucionan a KPIs de servicio (SLA, MTTR, MTBF) después del go-live.</p>
+                        </div>
+                        <div class="integration-card" style="border-top-color: #FF9800;">
+                            <div class="icon">👥</div>
+                            <h4>Equipos Híbridos</h4>
+                            <p>30% del equipo del proyecto permanece en operaciones como "guardianes del conocimiento". Aseguran continuidad.</p>
+                        </div>
+                        <div class="integration-card" style="border-top-color: #E91E63;">
+                            <div class="icon">📚</div>
+                            <h4>Documentación Unificada</h4>
+                            <p>El plan de proyecto de PMBOK alimenta la base de conocimiento de ITIL. Los runbooks operativos nacen de la documentación técnica del proyecto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="kpis" class="content">
+            <div class="scenario">
+                <h2 style="color: #667eea; margin-bottom: 25px;">📈 KPIs y Resultados Esperados</h2>
+
+                <div class="card">
+                    <h3>📊 Indicadores del Proyecto (PMBOK)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #667eea;">📅 Cumplimiento de Cronograma</h4>
+                            <div class="metric-value" style="color: #4CAF50;">92%</div>
+                            <p style="margin-top: 10px;">SPI (Schedule Performance Index): 0.92</p>
+                            <p style="color: #666; font-size: 0.9em;">Meta: ≥ 0.90</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #667eea;">💰 Desempeño de Costos</h4>
+                            <div class="metric-value" style="color: #4CAF50;">1.05</div>
+                            <p style="margin-top: 10px;">CPI (Cost Performance Index): 1.05</p>
+                            <p style="color: #666; font-size: 0.9em;">5% bajo presupuesto</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #667eea;">✅ Alcance Completado</h4>
+                            <div class="metric-value" style="color: #667eea;">95%</div>
+                            <p style="margin-top: 10px;">15 de 15 servicios implementados</p>
+                            <p style="color: #666; font-size: 0.9em;">3 con funcionalidad reducida</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #667eea;">😊 Satisfacción Stakeholders</h4>
+                            <div class="metric-value" style="color: #4CAF50;">8.5/10</div>
+                            <p style="margin-top: 10px;">Encuesta trimestral</p>
+                            <p style="color: #666; font-size: 0.9em;">85% aprobación ciudadana</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ Indicadores de Servicio (ITIL)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #4CAF50;">⚡ Disponibilidad</h4>
+                            <div class="metric-value" style="color: #4CAF50;">99.95%</div>
+                            <p style="margin-top: 10px;">Servicios críticos</p>
+                            <p style="color: #666; font-size: 0.9em;">SLA: 99.90%</p>
+                            <div class="progress-bar" style="margin-top: 10px;">
+                                <div class="progress-fill" style="width: 99.95%;">✓</div>
+                            </div>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #4CAF50;">🔧 MTTR (Mean Time to Repair)</h4>
+                            <div class="metric-value" style="color: #4CAF50;">45 min</div>
+                            <p style="margin-top: 10px;">Tiempo medio de resolución</p>
+                            <p style="color: #666; font-size: 0.9em;">Meta: ≤ 60 min</p>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #4CAF50;">📞 FCR (First Call Resolution)</h4>
+                            <div class="metric-value" style="color: #FF9800;">72%</div>
+                            <p style="margin-top: 10px;">Resolución en primer contacto</p>
+                            <p style="color: #666; font-size: 0.9em;">Meta: ≥ 80%</p>
+                            <div class="progress-bar" style="margin-top: 10px;">
+                                <div class="progress-fill" style="width: 72%; background: linear-gradient(90deg, #FF9800 0%, #F57C00 100%);">72%</div>
+                            </div>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <h4 style="color: #4CAF50;">📱 Adopción Digital</h4>
+                            <div class="metric-value" style="color: #4CAF50;">68%</div>
+                            <p style="margin-top: 10px;">3.4M usuarios activos</p>
+                            <p style="color: #666; font-size: 0.9em;">De 5M de ciudadanos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🏆 Resultados de Negocio (Año 1 Post-Implementación)</h3>
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;">
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">35%</div>
+                                <p>Reducción en tiempos de viaje promedio</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">28%</div>
+                                <p>Ahorro en consumo energético municipal</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">42%</div>
+                                <p>Reducción de crimen en zonas monitoreadas</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">$12M</div>
+                                <p>Ahorro anual en eficiencia operativa</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">4.2 años</div>
+                                <p>ROI (Retorno de Inversión)</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">88%</div>
+                                <p>Satisfacción ciudadana con servicios digitales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎓 Lecciones Aprendidas</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="background: #e8f5e9; border-left: 5px solid #4CAF50; padding: 20px; margin: 15px 0; border-radius: 5px;">
+                            <h4 style="color: #2e7d32; margin-bottom: 10px;">✅ Aciertos</h4>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li>Enfoque híbrido (Cascada + Ágil) permitió flexibilidad sin perder control</li>
+                                <li>Integración temprana del equipo de operaciones (ITIL) en el proyecto evitó sorpresas en go-live</li>
+                                <li>Programa de alfabetización digital redujo brecha y aumentó adopción</li>
+                                <li>Arquitectura cloud-native facilitó escalabilidad y redujo costos de infraestructura</li>
+                            </ul>
+                        </div>
+                        <div style="background: #fff3e0; border-left: 5px solid #FF9800; padding: 20px; margin: 15px 0; border-radius: 5px;">
+                            <h4 style="color: #e65100; margin-bottom: 10px;">⚠️ Áreas de Mejora</h4>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li>Subestimación inicial de la gestión del cambio organizacional (+3 meses)</li>
+                                <li>Validación de calidad de hardware IoT debió ser más rigurosa</li>
+                                <li>Comunicación con sindicatos debió iniciar 6 meses antes</li>
+                                <li>Plan de contingencia para ciberseguridad requirió refuerzo (+$2M)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border: none;">
+                    <h3 style="color: #d84315;">🚀 Próximos Pasos: NeoCity 2.0</h3>
+                    <p style="margin: 15px 0; font-size: 1.1em;">Basándose en el éxito de NeoConnect, el gobierno ha aprobado la Fase 2:</p>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Gemelo Digital de la Ciudad:</strong> Simulación completa para planificación urbana</li>
+                        <li><strong>IA Generativa:</strong> Asistente virtual ciudadano con procesamiento de lenguaje natural</li>
+                        <li><strong>Blockchain:</strong> Registro inmutable de títulos de propiedad y contratos</li>
+                        <li><strong>5G Private Network:</strong> Red privada para servicios críticos de emergencia</li>
+                        <li><strong>Expansión Regional:</strong> Replicar modelo en 5 ciudades satelitales</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button class="btn" onclick="downloadPDF()">📄 Descargar Caso Completo PDF</button>
+                        <button class="btn" onclick="openDashboard()">🎯 Ver Dashboard en Vivo</button>
+                        <button class="btn" onclick="contactTeam()">📧 Contactar Equipo del Proyecto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Ocultar todos los contenidos
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Desactivar todos los tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Mostrar el contenido seleccionado
+            document.getElementById(tabName).classList.add('active');
+
+            // Activar el tab seleccionado
+            event.target.classList.add('active');
+
+            // Scroll suave al inicio del contenido
+            window.scrollTo({
+                top: 400,
+                behavior: 'smooth'
+            });
+        }
+
+        // Animación de entrada para las tarjetas
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Efecto de click en botones
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Crear efecto de onda
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = (e.clientX - rect.left - 10) + 'px';
+                ripple.style.top = (e.clientY - rect.top - 10) + 'px';
+                
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+                
+                alert('Esta es una demostración. En un entorno real, esta acción abriría el recurso correspondiente.');
+            });
+        });
+
+        // Añadir estilo de animación ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    width: 200px;
+                    height: 200px;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Actualizar barras de progreso de forma animada
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 500);
+        });
+
+        // Funcionalidad de la matriz interactiva
+        document.addEventListener('DOMContentLoaded', function() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const detailBox = document.getElementById('integration-detail');
+                    const detailContent = document.getElementById('detail-content');
+                    const integration = this.getAttribute('data-integration');
+                    
+                    detailContent.innerHTML = `<strong>Integración detectada:</strong><br><br>${integration}`;
+                    detailBox.style.display = 'block';
+                    
+                    // Scroll suave al detalle
+                    detailBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // Efecto de pulso
+                    detailBox.style.animation = 'fadeIn 0.5s ease';
+                });
+            });
+        });
+
+        function closeDetail() {
+            document.getElementById('integration-detail').style.display = 'none';
+        }
+
+        // Destacar fila y columna al hacer hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const matrix = document.querySelector('.integration-matrix');
+            if (matrix) {
+                const cells = matrix.querySelectorAll('td, th');
+                
+                cells.forEach(cell => {
+                    cell.addEventListener('mouseenter', function() {
+                        const cellIndex = this.cellIndex;
+                        const row = this.parentElement;
+                        
+                        // Destacar toda la fila
+                        Array.from(row.children).forEach(c => {
+                            if (!c.classList.contains('itil-practice')) {
+                                c.style.background = 'rgba(102, 126, 234, 0.1)';
+                            }
+                        });
+                        
+                        // Destacar toda la columna
+                        const rows = matrix.querySelectorAll('tr');
+                        rows.forEach(r => {
+                            if (r.children[cellIndex] && !r.children[cellIndex].classList.contains('pmbok-header')) {
+                                const originalBg = r.children[cellIndex].classList.contains('high') ? 'linear-gradient(135deg, #ffab91 0%, #ff8a65 100%)' :
+                                                   r.children[cellIndex].classList.contains('medium') ? 'linear-gradient(135deg, #fff59d 0%, #fff176 100%)' :
+                                                   r.children[cellIndex].classList.contains('low') ? 'linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%)' : '';
+                                r.children[cellIndex].style.background = 'rgba(102, 126, 234, 0.2)';
+                            }
+                        });
+                    });
+                    
+                    cell.addEventListener('mouseleave', function() {
+                        // Restaurar colores originales
+                        cells.forEach(c => {
+                            if (c.classList.contains('high')) {
+                                c.style.background = 'linear-gradient(135deg, #ffab91 0%, #ff8a65 100%)';
+                            } else if (c.classList.contains('medium')) {
+                                c.style.background = 'linear-gradient(135deg, #fff59d 0%, #fff176 100%)';
+                            } else if (c.classList.contains('low')) {
+                                c.style.background = 'linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%)';
+                            }
+                        });
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
